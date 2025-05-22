@@ -28,7 +28,7 @@ const FactsGenerator = () => {
     setFact("");
 
     const fetchPromise = fetchFact();
-    const TimerPromise = wait(2500); // Just for fun animation
+    const TimerPromise = wait(2500);
 
     const newFact = await fetchPromise;
     await TimerPromise;
