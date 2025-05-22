@@ -1,18 +1,19 @@
-import React from "react";
+import React, { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
+import { Menu, X } from "lucide-react"; // optional: for hamburger icons
 
 const NavBar = () => {
   const location = useLocation();
+  const [menuOpen, setMenuOpen] = useState(false);
 
-  // Determine which page we're on
   const isQuotePage = location.pathname === "/";
   const isJokePage = location.pathname === "/jokes";
   const isFactPage = location.pathname === "/facts";
 
   return (
-    <div className="sticky top-0 z-50 px-4 py-5 mx-auto text-white md:px-8 bg-gradient-to-r from-blue-950 to-gray-900 border-b-[1px] border-gray-700">
+    <div className="sticky top-0 z-50 px-4 py-5 mx-auto text-white border-b border-gray-700 bg-gradient-to-r from-blue-950 to-gray-900">
       <div className="flex items-center justify-between">
-        {/* Conditional Logo */}
+        {/* Logo */}
         <div className="text-xl font-bold">
           {isQuotePage && "Quote Generator 🤖"}
           {isJokePage && "Joke Generator 😂"}
@@ -20,7 +21,8 @@ const NavBar = () => {
           {!isQuotePage && !isJokePage && !isFactPage && "About Us 🎭"}
         </div>
 
-        <div className="flex gap-5 md:gap-10">
+        {/* Desktop Menu */}
+        <div className="hidden gap-5 md:flex">
           <Link
             to="/"
             className="font-semibold transition-colors hover:text-yellow-400"
@@ -41,12 +43,57 @@ const NavBar = () => {
           </Link>
           <Link
             to="/about"
-            className="font-semibold transition transform cursor-pointer active:scale-90 hover:scale-105"
+            className="font-semibold transition transform active:scale-90 hover:scale-105"
           >
             About Us
           </Link>
         </div>
+
+        {/* Mobile Menu Button */}
+        <div className="md:hidden">
+          <button onClick={() => setMenuOpen(!menuOpen)}>
+            {menuOpen ? (
+              <X className="w-6 h-6" />
+            ) : (
+              <Menu className="w-6 h-6" />
+            )}
+          </button>
+        </div>
       </div>
+
+      {/* Mobile Dropdown Menu */}
+      {menuOpen && (
+        <div className="flex flex-col mt-4 space-y-4 md:hidden">
+          <Link
+            to="/"
+            onClick={() => setMenuOpen(false)}
+            className="font-semibold transition-colors hover:text-yellow-400"
+          >
+            QuoteBot
+          </Link>
+          <Link
+            to="/jokes"
+            onClick={() => setMenuOpen(false)}
+            className="font-semibold transition-colors hover:text-green-400"
+          >
+            JokeBot
+          </Link>
+          <Link
+            to="/facts"
+            onClick={() => setMenuOpen(false)}
+            className="font-semibold transition-colors hover:text-pink-400"
+          >
+            FactsBot
+          </Link>
+          <Link
+            to="/about"
+            onClick={() => setMenuOpen(false)}
+            className="font-semibold transition transform active:scale-90 hover:scale-105"
+          >
+            About Us
+          </Link>
+        </div>
+      )}
     </div>
   );
 };
